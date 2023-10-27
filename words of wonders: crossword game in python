@@ -1,0 +1,77 @@
+import random
+
+def create_crossword(words):
+    crossword = [[' ' for _ in range(15)] for _ in range(15)]
+
+    for word in words:
+        direction = random.choice(['across', 'down'])
+        x, y = random.randint(0, 14), random.randint(0, 14)
+        while not can_place_word(crossword, x, y, direction, word):
+            x, y = random.randint(0, 14), random.randint(0, 14)
+
+        if direction == 'across':
+            for i, letter in enumerate(word):
+                crossword[y][x + i] = letter
+        else:
+            for i, letter in enumerate(word):
+                crossword[y + i][x] = letter
+
+    return crossword
+
+def can_place_word(crossword, x, y, direction, word):
+    if direction == 'across':
+        for i, letter in enumerate(word):
+            if x + i >= 15 or crossword[y][x + i] != ' ':
+                return False
+    else:
+        for i, letter in enumerate(word):
+            if y + i >= 15 or crossword[y + i][x] != ' ':
+                return False
+    return True
+
+def display_crossword(crossword):
+    for row in crossword:
+        print(' '.join(row))
+
+def solve_crossword(crossword, words):
+    for word in words:
+        for i in range(15):
+            for j in range(15):
+                if try_place_word(crossword, i, j, 'across', word):
+                    words.remove(word)
+                    break
+                elif try_place_word(crossword, i, j, 'down', word):
+                    words.remove(word)
+                    break
+            if not words:
+                break
+
+def try_place_word(crossword, x, y, direction, word):
+    if direction == 'across':
+        if x + len(word) > 15:
+            return False
+        for i, letter in enumerate(word):
+            if crossword[y][x + i] != ' ' and crossword[y][x + i] != letter:
+                return False
+            crossword[y][x + i] = letter
+    else:
+        if y + len(word) > 15:
+            return False
+        for i, letter in enumerate(word):
+            if crossword[y + i][x] != ' ' and crossword[y + i][x] != letter:
+                return False
+            crossword[y + i][x] = letter
+    return True
+
+if __name__ == "__main__":
+    word_list = ["python", "crossword", "puzzle", "game", "solver", "generator", "word", "across", "down"]
+    
+    crossword_puzzle = create_crossword(word_list)
+    
+    print("Generated Crossword Puzzle:")
+    display_crossword(crossword_puzzle)
+    
+    solve_crossword(crossword_puzzle, word_list)
+    
+    print("\nSolved Crossword Puzzle:")
+    display_crossword(crossword_puzzle)
