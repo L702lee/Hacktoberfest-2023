@@ -1,0 +1,48 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <time.h>
+
+// Function to delay the game for a short period
+void delay(int milliseconds) {
+    clock_t start_time = clock();
+    while (clock() < start_time + milliseconds);
+}
+
+int main() {
+    char ingredients[5][20] = {"Dough", "Tomato Sauce", "Cheese", "Pepperoni", "Oregano"};
+    int ingredient_count = 5;
+    int steps = 0;
+
+    printf("Welcome to the Cooking Game!\n");
+    printf("Today, we are going to make a delicious pizza.\n");
+
+    // Shuffle the ingredients randomly
+    srand(time(NULL));
+    for (int i = 0; i < ingredient_count; i++) {
+        int j = rand() % ingredient_count;
+        char temp[20];
+        strcpy(temp, ingredients[i]);
+        strcpy(ingredients[i], ingredients[j]);
+        strcpy(ingredients[j], temp);
+    }
+
+    printf("Here are the ingredients you need:\n");
+
+    for (int i = 0; i < ingredient_count; i++) {
+        printf("%d. %s\n", i + 1, ingredients[i]);
+    }
+
+    printf("Follow the steps to create the pizza:\n");
+
+    while (steps < ingredient_count) {
+        printf("Step %d: Add %s. Press 'Enter' when ready.", steps + 1, ingredients[steps]);
+        getchar();
+        printf("Ingredient added!\n");
+        steps++;
+    }
+
+    printf("Congratulations! You have prepared a delicious pizza!\n");
+
+    return 0;
+}
