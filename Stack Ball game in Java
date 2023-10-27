@@ -1,0 +1,51 @@
+import java.util.Random;
+
+public class StackBallGame {
+    public static void main(String[] args) {
+        int towerHeight = 10; // Height of the tower
+        int towerWidth = 10; // Width of the tower
+        char[][] tower = new char[towerHeight][towerWidth];
+
+        Random rand = new Random();
+        int ballPosition = rand.nextInt(towerWidth); // Initial ball position
+        int ballSpeed = 1; // Ball speed
+
+        for (int i = 0; i < towerHeight; i++) {
+            for (int j = 0; j < towerWidth; j++) {
+                tower[i][j] = ' ';
+            }
+        }
+
+        while (ballPosition >= 0 && ballPosition < towerWidth && towerHeight > 0) {
+            for (int i = 0; i < towerHeight; i++) {
+                tower[i][ballPosition] = ' ';
+            }
+
+            // Move the ball down
+            ballPosition += ballSpeed;
+            if (ballPosition < 0) {
+                ballPosition = 0;
+                ballSpeed = 1;
+            } else if (ballPosition >= towerWidth) {
+                ballPosition = towerWidth - 1;
+                ballSpeed = -1;
+            }
+
+            for (int i = 0; i < towerHeight; i++) {
+                tower[i][ballPosition] = 'O';
+            }
+
+            // Print the tower
+            for (int i = 0; i < towerHeight; i++) {
+                for (int j = 0; j < towerWidth; j++) {
+                    System.out.print(tower[i][j]);
+                }
+                System.out.println();
+            }
+
+            towerHeight--;
+        }
+
+        System.out.println("Game over! The ball hit the ground.");
+    }
+}
