@@ -1,0 +1,83 @@
+#include <iostream>
+#include <vector>
+#include <conio.h> // For _getch() function (Windows specific)
+
+using namespace std;
+
+const int rows = 10;
+const int cols = 10;
+
+char labyrinth[rows][cols] = {
+    {'#', '#', '#', '#', '#', '#', '#', '#', '#', '#'},
+    {'#', ' ', '#', ' ', ' ', ' ', ' ', ' ', ' ', '#'},
+    {'#', ' ', '#', ' ', '#', '#', ' ', '#', ' ', '#'},
+    {'#', ' ', ' ', ' ', '#', ' ', ' ', ' ', ' ', '#'},
+    {'#', ' ', '#', ' ', ' ', ' ', '#', ' ', ' ', '#'},
+    {'#', ' ', '#', ' ', '#', '#', '#', ' ', ' ', '#'},
+    {'#', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '#'},
+    {'#', ' ', ' ', '#', '#', ' ', '#', ' ', ' ', '#'},
+    {'#', ' ', ' ', ' ', ' ', ' ', '#', 'E', ' ', '#'},
+    {'#', '#', '#', '#', '#', '#', '#', '#', '#', '#'},
+};
+
+int playerX = 1;
+int playerY = 1;
+
+void printLabyrinth() {
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            if (i == playerY && j == playerX) {
+                cout << "P ";
+            } else {
+                cout << labyrinth[i][j] << ' ';
+            }
+        }
+        cout << endl;
+    }
+}
+
+bool isExit() {
+    return labyrinth[playerY][playerX] == 'E';
+}
+
+int main() {
+    char move;
+    while (true) {
+        system("cls"); // For Windows. For Linux/Unix, use "clear."
+        printLabyrinth();
+
+        if (isExit()) {
+            cout << "Congratulations! You found the exit!" << endl;
+            break;
+        }
+
+        move = _getch();
+        switch (move) {
+            case 'w':
+                if (labyrinth[playerY - 1][playerX] != '#') {
+                    playerY--;
+                }
+                break;
+            case 's':
+                if (labyrinth[playerY + 1][playerX] != '#') {
+                    playerY++;
+                }
+                break;
+            case 'a':
+                if (labyrinth[playerY][playerX - 1] != '#') {
+                    playerX--;
+                }
+                break;
+            case 'd':
+                if (labyrinth[playerY][playerX + 1] != '#') {
+                    playerX++;
+                }
+                break;
+            case 'q':
+                cout << "You quit the game." << endl;
+                return 0;
+        }
+    }
+
+    return 0;
+}
