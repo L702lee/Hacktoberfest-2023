@@ -1,0 +1,53 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+int playerHealth = 100;
+int enemyHealth = 100;
+
+void playerAttack() {
+    int damage = rand() % 20 + 10;
+    enemyHealth -= damage;
+    printf("You attack the enemy for %d damage.\n", damage);
+}
+
+void enemyAttack() {
+    int damage = rand() % 20 + 10;
+    playerHealth -= damage;
+    printf("The enemy attacks you for %d damage.\n", damage);
+}
+
+int main() {
+    srand(time(NULL));
+    int choice;
+
+    printf("Welcome to Ninja Legends!\n");
+
+    while (playerHealth > 0 && enemyHealth > 0) {
+        printf("Your Health: %d | Enemy Health: %d\n", playerHealth, enemyHealth);
+        printf("1. Attack\n");
+        printf("2. Run\n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+
+        switch (choice) {
+            case 1:
+                playerAttack();
+                enemyAttack();
+                break;
+            case 2:
+                printf("You managed to escape. Ninja Legends await you another day.\n");
+                return 0;
+            default:
+                printf("Invalid choice. Try again.\n");
+        }
+
+        if (playerHealth <= 0) {
+            printf("You were defeated by the enemy. Ninja Legends have a new champion!\n");
+        } else if (enemyHealth <= 0) {
+            printf("Congratulations! You defeated the enemy. You are the champion of Ninja Legends!\n");
+        }
+    }
+
+    return 0;
+}
